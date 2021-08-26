@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.boardRepository.BoardMapper">
+
+	<select id="boardCount" resultType="Integer">
+	
+		select count(*) from board;
+	
+	</select>
+
+
+	<!-- 전체 개수 구하기 -->
+	<select id="boardInfo" resultType="com.example.demo.boardVo.BoardEntVo">
+	
+		select id, tit, cont,"regDate", "modDate" from board order by id asc limit #{pag.recordsPerPage} offset #{pag.startPage};
+	
+	</select>
+	
+	<!-- 게시글 상세 조회 (id로) -->
+	<select id="boardDet" resultType="com.example.demo.boardVo.BoardDetVo">
+	
+		select b.tit, b.cont, b."regDate", b."modDate", f.* from board b join file f on b.id = f.boardid where b.id = #{id};
+	
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="boardMod">
+	
+		update board set tit = #{board.tit}, cont = #{board.cont}, "modDate" = pg_catalog.clock_timestamp() where id = #{board.id};
+	
+	</update>
+	
+	<!-- 게시글 추가 (첨부파일 없음)-->
+	<insert id="boardAdd" parameterType="com.example.demo.boardDto.BoardDto">
+	
+		insert into board (tit,cont,"regDate") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp());
+	
+	</insert>
+
+	<!-- 게시글 추가 (첨부파일 있음) -->
+	<insert id="boardAddFile">
+		
+		insert into board (tit,cont,"regDate") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp());
+		
+	</insert>
+	
+	<!-- 첨부파일 추가 -->
+	<insert id="boardFile">
+	
+		insert into file ("originalName","saveDir",inserttime, boardId) values (#{originalName},#{dir},pg_catalog.clock_timestamp(),currval('board_id_seq'));
+	
+	</insert>
+
+
+
+
+
+</mapper>
