@@ -15,6 +15,7 @@ public class BoardFileDownVo {
 	private String saveDir;
 	private String deleteyn;
 	private Date inserttime;
+	private Date deletetime;
 	private int boardid;
 
 }

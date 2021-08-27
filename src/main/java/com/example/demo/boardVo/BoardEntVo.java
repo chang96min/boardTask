@@ -11,14 +11,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class BoardEntVo {
 
-	private int id;
 	private String tit;
-	private String cont;
 	private Date regDate;
+	private int id;
+	private String cont;
 	private Date modDate;
+	private int accountId;
+	private String name;
 	
 }
 

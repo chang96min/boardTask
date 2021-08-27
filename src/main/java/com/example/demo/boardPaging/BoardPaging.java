@@ -27,7 +27,10 @@ public class BoardPaging {
 		this.recordsPerPage = 10;
 		//화면 하단에 출력할 페이지 사이즈
 		this.pageSize = 10;
+		//검색 키워드의 타입
+		this.searchType = "tit";
 	}
+	
 	//페이지 번호 클릭시 메서드
 	public int getStartPage() {
 		return (currentPageNo - 1) * recordsPerPage;

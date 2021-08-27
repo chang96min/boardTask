@@ -10,6 +10,7 @@ import com.example.demo.boardRepository.BoardMapper;
 import com.example.demo.boardService.BoardService;
 import com.example.demo.boardVo.BoardDetVo;
 import com.example.demo.boardVo.BoardEntVo;
+import com.example.demo.boardVo.BoardFileDownVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,9 +22,9 @@ public class BoardServiceImp implements BoardService{
 	
 	//전체 개수 구하기
 	@Override
-	public int boardCount(){
+	public int boardCount(BoardPaging boardPaging){
 		
-		return boardMapper.boardCount();
+		return boardMapper.boardCount(boardPaging);
 	}
 	
 	//게시판 전체글 정보(페이징o)
@@ -33,23 +34,19 @@ public class BoardServiceImp implements BoardService{
 		return boardMapper.boardInfo(boardPaging);
 	}
 	
-	//게시판 전체글 조회
-//	@Override
-//	public BoardEntCountVo boardEntCountList() {
-//		
-//		BoardEntCountVo vo = new BoardEntCountVo();
-//		
-//		vo.setBoardInfo(boardInfo(boardPaging));
-//		
-//		
-//		return 
-//	}
 	
 	//게시글 상세 조회 (id로 조회)
 	@Override
-	public List<BoardDetVo> boardDet(int boardId) {
+	public BoardEntVo boardDetInfo(int boardId) {
 		
-		return boardMapper.boardDet(boardId);
+		return boardMapper.boardDetInfo(boardId);
+	}
+	
+	//게시글 상세 조회와 맞는 파일 정보
+	@Override
+	public List<BoardFileDownVo> boardDetFile(int boardId){
+		
+		return boardMapper.boardDetFile(boardId);
 	}
 	
 	//게시글 수정
@@ -81,5 +78,11 @@ public class BoardServiceImp implements BoardService{
 		boardMapper.boardFile(originalName,dir);
 	}
 	
+	//게시글 삭제
+	@Override
+	public void boardDel(int id) {
+		boardMapper.boardDel(id);
+	}
+
 	
 }

@@ -12,15 +12,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BoardDetVo {
-	private String tit;
-	private String cont;
-	private Date regDate;
-	private Date modDate;
-	private int id;
-	private String originalName;
-	private String saveDir;
-	private String deleteyn;
-	private Date inserttime;
-	private Date deletetime;
-	private int boardid;
+	private BoardEntVo boardDetInfoVo;
+	private List<BoardFileDownVo> boardDetFileVo;
 }

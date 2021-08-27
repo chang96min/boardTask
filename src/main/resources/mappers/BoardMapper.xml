@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.boardRepository.BoardMapper">
-
+	<!-- 게시글 갯수 -->
 	<select id="boardCount" resultType="Integer">
 	
-		select count(*) from board;
+		select count(*) from board where ${pag.searchType} like '%${pag.searchKeyword}%';
 	
 	</select>
 
 
-	<!-- 전체 개수 구하기 -->
-	<select id="boardInfo" resultType="com.example.demo.boardVo.BoardEntVo">
+	<!-- 게시글 조회 -->
+	<select id="boardInfo" resultType="com.example.demo.boardVo.BoardEntVo" parameterType="com.example.demo.boardPaging.BoardPaging">
 	
-		select id, tit, cont,"regDate", "modDate" from board order by id asc limit #{pag.recordsPerPage} offset #{pag.startPage};
+		select b.*, a.name 
+		from board b join account a on b."accountId" = a.id where b.${pag.searchType} like '%${pag.searchKeyword}%' 
+		order by id desc limit #{pag.recordsPerPage} offset #{pag.startPage};
 	
 	</select>
 	
 	<!-- 게시글 상세 조회 (id로) -->
-	<select id="boardDet" resultType="com.example.demo.boardVo.BoardDetVo">
+	<select id="boardDetInfo" resultType="com.example.demo.boardVo.BoardEntVo">
 	
-		select b.tit, b.cont, b."regDate", b."modDate", f.* from board b join file f on b.id = f.boardid where b.id = #{id};
+		select b.*, a.name from board b join account a on b."accountId" = a.id where b.id = #{id};
 	
 	</select>
 	
-	<!-- 게시글 수정 -->
+	<!-- 	게시글 상세 조회와 맞는 파일 정보 조회 -->
+	<select id="boardDetFile" resultType="com.example.demo.boardVo.BoardFileDownVo">
+	
+		select * from file where boardid = #{id}
+	
+	</select>
+	
 	<update id="boardMod">
 	
 		update board set tit = #{board.tit}, cont = #{board.cont}, "modDate" = pg_catalog.clock_timestamp() where id = #{board.id};
@@ -50,6 +58,14 @@
 		insert into file ("originalName","saveDir",inserttime, boardId) values (#{originalName},#{dir},pg_catalog.clock_timestamp(),currval('board_id_seq'));
 	
 	</insert>
+
+	<!-- 게시글 삭제 -->
+	<delete id="boardDel" parameterType="Integer">
+	
+		delete from board where id = #{id};
+	
+	</delete>
+
 
 
 
