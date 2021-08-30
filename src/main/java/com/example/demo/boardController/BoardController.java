@@ -2,14 +2,15 @@ package com.example.demo.boardController;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,8 @@ import com.example.demo.boardPaging.BoardPaging;
 import com.example.demo.boardService.BoardService;
 import com.example.demo.boardVo.BoardDetVo;
 import com.example.demo.boardVo.BoardEntCountVo;
+import com.example.demo.webSecurity.TokenDto;
+import com.example.demo.webSecurity.UserRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -28,10 +31,11 @@ import lombok.AllArgsConstructor;
 public class BoardController {
 	
 	public final BoardService boardService;
-
+	public final UserRepository userRepository;
 	
 	//게시판 전체글 리스트 출력
 	@GetMapping("/user/board")
+	@CrossOrigin(origins = "*", allowedHeaders ="*")
 	public BoardEntCountVo boardEntList(BoardPaging boardPaging) {
 		
 		BoardEntCountVo vo = new BoardEntCountVo();
@@ -68,7 +72,7 @@ public class BoardController {
 	
 	//게시글 수정
 	@PostMapping("/user/boardMod")
-	public String boardMod(@ModelAttribute BoardDto boardDto) throws IllegalStateException, IOException{
+	public String boardMod(@ModelAttribute BoardDto boardDto, @RequestHeader("TOKEN") String jwtToken) throws IllegalStateException, IOException{
 		
 		//첨부파일이 있으면
 				if(boardDto.getFile() != null) {
@@ -105,10 +109,15 @@ public class BoardController {
 	//게시글 등록
 	@PostMapping("/user/boardAdd")
 	public String boardAdd(@ModelAttribute BoardDto boardDto) throws IllegalStateException, IOException {
+		
+		String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		TokenDto tokenDto = userRepository.find(principal);
+		
 		//첨부파일이 있으면
 		if(boardDto.getFile() != null) {
 			//게시글 등록
-			boardService.boardAddFile(boardDto);
+			boardService.boardAddFile(boardDto, tokenDto);
 			//첨부파일 여러개일 경우 반복하여 각각 저장
 			for(MultipartFile file : boardDto.getFile()) {
 				UUID uuid = UUID.randomUUID();
@@ -125,7 +134,7 @@ public class BoardController {
 		//첨부파일이 없으면
 		} else {
 			//게시글 등록
-			boardService.boardAdd(boardDto);
+			boardService.boardAdd(boardDto, tokenDto);
 		}
 		return "redirect:/board";	
 		

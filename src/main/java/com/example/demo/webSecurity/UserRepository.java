@@ -12,4 +12,6 @@ public interface UserRepository {
 	Optional<User> findByEmail(@Param("email")String email);
 
 	void save(@Param("user")User user);
+	
+	TokenDto find(@Param("email")String principal);
 }

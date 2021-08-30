@@ -11,6 +11,7 @@ import com.example.demo.boardService.BoardService;
 import com.example.demo.boardVo.BoardDetVo;
 import com.example.demo.boardVo.BoardEntVo;
 import com.example.demo.boardVo.BoardFileDownVo;
+import com.example.demo.webSecurity.TokenDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -58,17 +59,17 @@ public class BoardServiceImp implements BoardService{
 	
 	//게시글 추가(첨부x)
 	@Override
-	public void boardAdd(BoardDto boardDto) {
+	public void boardAdd(BoardDto boardDto, TokenDto tokenDto) {
 		
-		boardMapper.boardAdd(boardDto);
+		boardMapper.boardAdd(boardDto, tokenDto);
 		
 	}
 	
 	//게시글 추가(첨부x)
 		@Override
-		public void boardAddFile(BoardDto boardDto) {
+		public void boardAddFile(BoardDto boardDto, TokenDto tokenDto) {
 			
-			boardMapper.boardAddFile(boardDto);
+			boardMapper.boardAddFile(boardDto, tokenDto);
 			
 		}
 	

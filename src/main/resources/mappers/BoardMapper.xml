@@ -41,14 +41,14 @@
 	<!-- 게시글 추가 (첨부파일 없음)-->
 	<insert id="boardAdd" parameterType="com.example.demo.boardDto.BoardDto">
 	
-		insert into board (tit,cont,"regDate") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp());
+		insert into board (tit,cont,"regDate","accountId") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp(),#{token.id});
 	
 	</insert>
 
 	<!-- 게시글 추가 (첨부파일 있음) -->
 	<insert id="boardAddFile">
 		
-		insert into board (tit,cont,"regDate") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp());
+		insert into board (tit,cont,"regDate","accountId") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp(),#{token.id);
 		
 	</insert>
 	

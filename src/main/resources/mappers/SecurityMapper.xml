@@ -9,10 +9,18 @@
 	
 	</select> 
 	
+	<!-- 토큰값에 맞는 유저 정보 조회 --> 
+ 	<select id="find" resultType="com.example.demo.webSecurity.TokenDto" parameterType="String">
+	
+ 		select * from account where email=#{email};
+	
+	</select> 
+	
 	<!-- 회원가입 -->
 	<insert id="save" parameterType="com.example.demo.webSecurity.User">
 	
-		insert into account(name,age,phone,loc,email,password,roles) values(#{user.name},#{user.age},#{user.phone},#{user.loc},#{user.email},#{user.password},#{user.roles});
+		insert into account(name,age,phone,loc,email,password,roles) 
+		values(#{user.name},#{user.age},#{user.phone},#{user.loc},#{user.email},concat('{noop}',#{user.password}),'ROLE_USER');
 	
 	</insert>
 

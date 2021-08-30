@@ -10,6 +10,7 @@ import com.example.demo.boardPaging.BoardPaging;
 import com.example.demo.boardVo.BoardDetVo;
 import com.example.demo.boardVo.BoardEntVo;
 import com.example.demo.boardVo.BoardFileDownVo;
+import com.example.demo.webSecurity.TokenDto;
 
 @Mapper
 public interface BoardMapper {
@@ -30,10 +31,10 @@ public interface BoardMapper {
 	void boardMod(@Param("board")BoardDto boardDto);
 
 	//게시글 추가(첨부x)
-	void boardAdd(@Param("board") BoardDto boardDto);
+	void boardAdd(@Param("board") BoardDto boardDto, @Param("token") TokenDto tokenDto);
 
 	//게시글 추가(첨부o)
-	void boardAddFile(@Param("board") BoardDto boardDto);
+	void boardAddFile(@Param("board") BoardDto boardDto, @Param("token") TokenDto tokenDto);
 	
 	//첨부파일 추가
 	void boardFile(@Param("originalName")String originalName, @Param("dir")String dir);

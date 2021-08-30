@@ -9,12 +9,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.GenericFilterBean;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders ="*")
 public class JwtAuthenticationFilter extends GenericFilterBean { //토큰확인, 유저정보 받아서 전달
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -29,6 +32,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean { //토큰확인,
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             // SecurityContext 에 Authentication 객체를 저장합니다.
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
         }
         chain.doFilter(request, response);
     }

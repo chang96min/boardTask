@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
+@CrossOrigin(origins = "*", allowedHeaders ="*")
 public class JwtTokenProvider { // 토큰 생성, 검증
 	
 	//임의로 생성한 비밀키(문자열)
@@ -39,9 +41,14 @@ public class JwtTokenProvider { // 토큰 생성, 검증
         		
     }
     //JWT 토큰 생성
-    public String createToken(String userPk, List<GrantedAuthority> roles){
-        Claims claims = Jwts.claims().setSubject(userPk);//JWT payload에 저장되는 정보단위
-        claims.put("roles", roles);
+    public String createToken(User member){
+    	Claims claims = Jwts.claims().setSubject(member.getEmail());//JWT payload에 저장되는 정보단위
+    	claims.put("id", member.getId());
+    	claims.put("name", member.getName());
+    	claims.put("age", member.getAge());
+    	claims.put("loc", member.getLoc());
+    	claims.put("phone", member.getPhone());
+        claims.put("roles", member.getRoles());
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -55,8 +62,6 @@ public class JwtTokenProvider { // 토큰 생성, 검증
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::           "+ this.getUserPk(token));
-        System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::           "+ userDetails.getAuthorities());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -65,7 +70,7 @@ public class JwtTokenProvider { // 토큰 생성, 검증
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
+    // Request의 Header에서 token 값을 가져옵니다. "TOKEN" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("TOKEN");
     }
