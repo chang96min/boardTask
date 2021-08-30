@@ -78,6 +78,12 @@ public class BoardServiceImp implements BoardService{
 		boardMapper.boardFile(originalName,dir);
 	}
 	
+	//수정시 첨부파일 추가
+	@Override
+	public void boardFile(String originalName, String dir, BoardDto boardDto) {
+		boardMapper.boardFileMod(originalName,dir,boardDto);
+	}
+	
 	//게시글 삭제
 	@Override
 	public void boardDel(int id) {

@@ -8,5 +8,12 @@
  		select * from account where email=#{email};
 	
 	</select> 
+	
+	<!-- 회원가입 -->
+	<insert id="save" parameterType="com.example.demo.webSecurity.User">
+	
+		insert into account(name,age,phone,loc,email,password,roles) values(#{user.name},#{user.age},#{user.phone},#{user.loc},#{user.email},#{user.password},#{user.roles});
+	
+	</insert>
 
 </mapper>

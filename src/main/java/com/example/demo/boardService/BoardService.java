@@ -32,6 +32,9 @@ public interface BoardService{
 
 	//첨부파일 추가
 	public void boardFile(String originalName, String dir);
+	
+	//수정 시 첨부파일 추가
+	public void boardFile(String originalName, String dir, BoardDto boardDto);
 
 	//게시글 삭제
 	public void boardDel(int id);

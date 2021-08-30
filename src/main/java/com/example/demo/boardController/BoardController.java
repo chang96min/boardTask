@@ -68,9 +68,30 @@ public class BoardController {
 	
 	//게시글 수정
 	@PostMapping("/user/boardMod")
-	public String boardMod(@ModelAttribute BoardDto boardDto) {
+	public String boardMod(@ModelAttribute BoardDto boardDto) throws IllegalStateException, IOException{
 		
-		boardService.boardMod(boardDto);
+		//첨부파일이 있으면
+				if(boardDto.getFile() != null) {
+					//게시글 수정
+					boardService.boardMod(boardDto);
+					//첨부파일 여러개일 경우 반복하여 각각 저장
+					for(MultipartFile file : boardDto.getFile()) {
+						UUID uuid = UUID.randomUUID();
+					    String originalName = file.getOriginalFilename();
+					    String saveName = uuid + originalName;
+						File dest = new File("C:\\saveFile\\"+saveName);
+						file.transferTo(dest);
+						String dir = "C:\\saveFile\\" + saveName;
+					
+						
+					//첨부파일 등록
+					boardService.boardFile(originalName,dir,boardDto);
+					    }
+				//첨부파일이 없으면
+				} else {
+					//게시글 수정
+					boardService.boardMod(boardDto);
+				}
 		
 		return "redirect:/board";
 	}

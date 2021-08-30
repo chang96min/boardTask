@@ -58,6 +58,13 @@
 		insert into file ("originalName","saveDir",inserttime, boardId) values (#{originalName},#{dir},pg_catalog.clock_timestamp(),currval('board_id_seq'));
 	
 	</insert>
+	
+	<!-- 첨부파일 추가 -->
+	<insert id="boardFileMod">
+	
+		insert into file ("originalName","saveDir",inserttime, boardId) values (#{originalName},#{dir},pg_catalog.clock_timestamp(),#{boardDto.id});
+	
+	</insert>
 
 	<!-- 게시글 삭제 -->
 	<delete id="boardDel" parameterType="Integer">

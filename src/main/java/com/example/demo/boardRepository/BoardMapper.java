@@ -38,9 +38,12 @@ public interface BoardMapper {
 	//첨부파일 추가
 	void boardFile(@Param("originalName")String originalName, @Param("dir")String dir);
 	
+	//수정시 첨부파일 다운로드
+	void boardFileMod(@Param("originalName")String originalName, @Param("dir") String dir, @Param("boardDto")BoardDto boardDto);
+
 	//첨부파일 다운로드
 	BoardFileDownVo boardFileDown(@Param("id") int boardId);
-
+	
 	//게시글 삭제
 	void boardDel(@Param("id") int id);
 

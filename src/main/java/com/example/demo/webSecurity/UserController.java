@@ -3,6 +3,7 @@ package com.example.demo.webSecurity;
 import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,21 +12,20 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+//협업 관련 - 다른 ip에서 접속 허용
+@CrossOrigin(origins = "*", allowedHeaders ="*")
 public class UserController {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
-//    // 회원가입
-//    @PostMapping("/join")
-//    public Long join(@RequestBody Map<String, String> user) {
-//        return userRepository.save(User.builder()
-//                .email(user.get("email"))
-//                .password(passwordEncoder.encode(user.get("password")))
-//                .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
-//                .build()).getId();
-//    }
+    // 회원가입
+    @PostMapping("/join")
+    public void join(@RequestBody User user) {
+
+    	userRepository.save(user);
+    }
 
     // 로그인
     @PostMapping("/login")
