@@ -28,7 +28,7 @@
 	<!-- 	게시글 상세 조회와 맞는 파일 정보 조회 -->
 	<select id="boardDetFile" resultType="com.example.demo.boardVo.BoardFileDownVo">
 	
-		select * from file where boardid = #{id}
+		select * from file where boardid = #{id} and deleteyn = 'false';
 	
 	</select>
 	
@@ -43,13 +43,6 @@
 	
 		insert into board (tit,cont,"regDate","accountId") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp(),#{token.id});
 	
-	</insert>
-
-	<!-- 게시글 추가 (첨부파일 있음) -->
-	<insert id="boardAddFile">
-		
-		insert into board (tit,cont,"regDate","accountId") values(#{board.tit},#{board.cont},pg_catalog.clock_timestamp(),#{token.id);
-		
 	</insert>
 	
 	<!-- 첨부파일 추가 -->

@@ -23,5 +23,12 @@
 		values(#{user.name},#{user.age},#{user.phone},#{user.loc},#{user.email},concat('{noop}',#{user.password}),'ROLE_USER');
 	
 	</insert>
+	
+	<!-- email 중복확인 -->
+	<select id="checkEmail" resultType="boolean" parameterType="String">
+	
+		select * from account where email = #{email}
+	
+	</select>
 
 </mapper>

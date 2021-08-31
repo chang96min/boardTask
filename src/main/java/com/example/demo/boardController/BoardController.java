@@ -51,7 +51,6 @@ public class BoardController {
 	public BoardDetVo boardDet(BoardDto boardDto) {
 		
 		int boardId = boardDto.getId();
-		
 		BoardDetVo vo = new BoardDetVo();
 		
 		vo.setBoardDetInfoVo(boardService.boardDetInfo(boardId));
@@ -72,7 +71,7 @@ public class BoardController {
 	
 	//게시글 수정
 	@PostMapping("/user/boardMod")
-	public String boardMod(@ModelAttribute BoardDto boardDto, @RequestHeader("TOKEN") String jwtToken) throws IllegalStateException, IOException{
+	public String boardMod(@ModelAttribute BoardDto boardDto) throws IllegalStateException, IOException{
 		
 		//첨부파일이 있으면
 				if(boardDto.getFile() != null) {
@@ -110,14 +109,16 @@ public class BoardController {
 	@PostMapping("/user/boardAdd")
 	public String boardAdd(@ModelAttribute BoardDto boardDto) throws IllegalStateException, IOException {
 		
+		//토큰에서 정보를 가져오는 부분
 		String principal = SecurityContextHolder.getContext().getAuthentication().getName();
-		
 		TokenDto tokenDto = userRepository.find(principal);
+		
+		//게시글 등록
+		boardService.boardAdd(boardDto, tokenDto);
 		
 		//첨부파일이 있으면
 		if(boardDto.getFile() != null) {
-			//게시글 등록
-			boardService.boardAddFile(boardDto, tokenDto);
+			
 			//첨부파일 여러개일 경우 반복하여 각각 저장
 			for(MultipartFile file : boardDto.getFile()) {
 				UUID uuid = UUID.randomUUID();
@@ -127,15 +128,10 @@ public class BoardController {
 				file.transferTo(dest);
 				String dir = "C:\\saveFile\\" + saveName;
 			
-				
-			//첨부파일 등록
-			boardService.boardFile(originalName,dir);
+				//첨부파일 등록
+				boardService.boardFile(originalName,dir);
 			    }
-		//첨부파일이 없으면
-		} else {
-			//게시글 등록
-			boardService.boardAdd(boardDto, tokenDto);
-		}
+		} 
 		return "redirect:/board";	
 		
 	}

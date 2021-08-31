@@ -14,4 +14,7 @@ public interface UserRepository {
 	void save(@Param("user")User user);
 	
 	TokenDto find(@Param("email")String principal);
+	
+	//이메일 중복검사
+	boolean checkEmail(@Param("email")String email);
 }

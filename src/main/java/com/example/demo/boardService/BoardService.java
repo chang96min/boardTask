@@ -27,9 +27,6 @@ public interface BoardService{
 
 	//게시글 추가(첨부x)
 	public void boardAdd(BoardDto boardDto, TokenDto tokenDto);
-	
-	//게시글 추가(첨부o)
-	public void boardAddFile(BoardDto boardDto, TokenDto tokenDto);
 
 	//첨부파일 추가
 	public void boardFile(String originalName, String dir);

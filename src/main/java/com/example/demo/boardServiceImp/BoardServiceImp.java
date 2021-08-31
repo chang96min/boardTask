@@ -65,14 +65,6 @@ public class BoardServiceImp implements BoardService{
 		
 	}
 	
-	//게시글 추가(첨부x)
-		@Override
-		public void boardAddFile(BoardDto boardDto, TokenDto tokenDto) {
-			
-			boardMapper.boardAddFile(boardDto, tokenDto);
-			
-		}
-	
 	//첨부파일 추가
 	@Override
 	public void boardFile(String originalName, String dir) {

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +24,15 @@ public class UserController {
     // 회원가입
     @PostMapping("/join")
     public void join(@RequestBody User user) {
-
     	userRepository.save(user);
+    }
+    
+    // 아이디 중복검사
+    @GetMapping("/checkEmail")
+    public boolean checkEmail(String email) {
+    	boolean checkEmail = userRepository.checkEmail(email);
+    	System.out.println(":::::::::::::::::::::::::::::"+checkEmail);
+    	return checkEmail;
     }
 
     // 로그인
